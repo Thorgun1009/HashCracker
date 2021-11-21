@@ -19,15 +19,15 @@ def cracking_function(hash_file, wordlist, hash_type):
     for j in range(1, num_lines):    
 
         #Take single line from wordlist and hash it using "hash_type" e.g hashlib.md5
-        x = subprocess.run(["sed", "{}q;d".format(str(j)), wordlist], capture_output=True)
-        y = hash_type(x.stdout.decode()[:-1].encode('utf-8')).hexdigest()
-        print(y)
+        single_line = subprocess.run(["sed", "{}q;d".format(str(j)), wordlist], capture_output=True)
+        hashed = hash_type(single_line.stdout.decode()[:-1].encode('utf-8')).hexdigest()
+        print(hashed)
 
         #Compare hash from our file and hash from our loop
-        if proc.stdout.decode()[:-1] == y:
+        if proc.stdout.decode()[:-1] == hashed:
             print("---------------------------------------------------")
-            print("Found hash: {}".format(y))
-            print(colored("Cracked password: {}".format(x.stdout.decode()[:-1]),"red"))
+            print("Found hash: {}".format(hashed))
+            print(colored("Cracked password: {}".format(single_line.stdout.decode()[:-1]),"red"))
             print("---------------------------------------------------")
             break
 
